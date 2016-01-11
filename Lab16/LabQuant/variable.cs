@@ -65,11 +65,12 @@ namespace LabQuant
             this.myCategories = new Dictionary<Int32, category>();
             this.myCategories.Add(missCat.catId, missCat);
             this.myCategories.Add(wrongCat.catId, wrongCat);
-
-            grouping mainGrouping = new grouping(this, myAnalyticalDictionary.mainGroupingName, myAnalyticalDictionary.getGroupingNum);
-
             myGroupings = new Dictionary<Int32, grouping>();
-            myGroupings.Add(mainGrouping.groupingId, mainGrouping);
+
+            addGrouping(myAnalyticalDictionary.mainGroupingName, true);
+
+           
+            
         }
     
 
@@ -86,6 +87,16 @@ namespace LabQuant
             return myCat;
     }
 
+        public grouping addGrouping(string groupingName, Boolean isNoGroup)
+        {
+            grouping newGrouping = new grouping(this, groupingName, myAnalyticalDictionary.getGroupingNum, isNoGroup);
+            myGroupings.Add(newGrouping.groupingId, newGrouping);
+            return newGrouping;
+
+        }
+
     } // class variable
+
+    
 
 }

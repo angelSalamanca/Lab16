@@ -13,6 +13,7 @@ namespace LabQuant
         public variable myVariable;
         public Dictionary<Int32, group> myGroups;
         public group myNoGroup;
+        public Boolean isMain;
 
         public group noGroup
         {
@@ -26,12 +27,12 @@ namespace LabQuant
             set { }
         }
 
-        public grouping(variable gVariable, string gname, Int32 gId)
+        public grouping(variable gVariable, string gname, Int32 gId, Boolean gIsMain)
         {
             name = gname;
             groupingId = gId;
             myVariable = gVariable;
-
+            isMain = gIsMain;
 
             myNoGroup = new group("", myVariable.myAnalyticalDictionary.getGroupNum, true, this);
             myGroups = new Dictionary<Int32, group>();

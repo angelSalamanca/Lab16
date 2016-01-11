@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using LabQuant;
+using LabControls;
 
 
 
@@ -24,6 +25,8 @@ namespace Lab16
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        analyticalDictionary myDD;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,11 +35,19 @@ namespace Lab16
         private void button_Click(object sender, RoutedEventArgs e)
         {
             // Create dictionary
-            analyticalDictionary myDD = new analyticalDictionary("Sample");
+            myDD = new analyticalDictionary("Sample");
             
             // Create variable
             variable x = myDD.addVar("x", variable.typeOfVariable.Integer);
             variable y = myDD.addVar("y", variable.typeOfVariable.String);
+            variable z = myDD.addVar("Time at Job", variable.typeOfVariable.Integer);
+            z = myDD.addVar("Residential Status", variable.typeOfVariable.String);
+            z = myDD.addVar("Type of Employment", variable.typeOfVariable.String);
+            z = myDD.addVar("Annual revenues", variable.typeOfVariable.Double);
+            z = myDD.addVar("Loan amount", variable.typeOfVariable.Double);
+            z = myDD.addVar("Loan duration", variable.typeOfVariable.Integer);
+            z = myDD.addVar("Gender", variable.typeOfVariable.String);
+
 
             category goodCat = myDD.addCat(y, "Good", "G");
             category badCat = myDD.addCat(y, "Bad", "B");
@@ -102,6 +113,28 @@ namespace Lab16
                 string l = g1 + " - " + g2 + " : " + howMany;
                     this.listView.Items.Add(l);
             }
-        }
-    }
-}
+
+            // add new grouping
+            myDD.varByName["x"].addGrouping("Other grouping", false);
+            myDD.varByName["x"].addGrouping("Other grouping 2", false);
+            myDD.varByName["y"].addGrouping("Useless grouping", false);
+            myDD.varByName["Type of Employment"].addGrouping("Special grouping", false);
+
+
+            fillVAndG();
+        } // click
+
+        private void fillVAndG()
+        {
+            varGrouping  vAndG = new varGrouping();
+            vAndG.HorizontalAlignment = HorizontalAlignment.Stretch;
+            vAndG.VerticalAlignment = VerticalAlignment.Stretch;
+            this.sPanel.Children.Add(vAndG);
+
+            foreach(KeyValuePair<int, variable> kvp in this.myDD.varByNum)
+            {
+                vAndG.addVariable(kvp.Value);
+            }
+        } // fillVAndG
+    } // class
+} // namespace
