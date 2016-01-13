@@ -64,9 +64,9 @@ namespace LabControls
 
             tItem.Header = sp;
 
-         
-            //(BitmapImage )this.FindResource("grouping.png");
-            // BitmapImage BitImg = new BitmapImage(new Uri("LabControls/image/grouping.png", UriKind.Relative));
+
+            // BitmapImage BitImg = (BitmapImage )this.FindResource("grouping.png");
+            // BitmapImage BitImg = new BitmapImage(new Uri("alpha.var.png"));
 
 
             foreach (KeyValuePair<int, grouping> kvp in var.myGroupings)
@@ -99,6 +99,16 @@ namespace LabControls
             }
 
             this.treeView.Items.Add(tItem);
+        }
+
+        private void addGrouping(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void deleteGrouping(object sender, RoutedEventArgs e)
+        {
+
         }
     } // class
 

@@ -6,42 +6,63 @@
              xmlns:local="clr-namespace:LabControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Background="#FF9FC7E8">
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFEDCEED" Offset="0"/>
+            <GradientStop Color="#FFEDA8EC" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey }" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#BBEDCEED" Offset="0"/>
+            <GradientStop Color="#BBEDA8EC" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+    </UserControl.Resources>
     <Grid x:Name="container">
+        <Grid.Resources>
+            <Style TargetType="{x:Type TreeViewItem}">
+                <Setter Property="BorderThickness" Value="1.5"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="BorderBrush" Value="#ED5CEB"/>
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsSelected" Value="True"/>
+                            <Condition Property="IsSelectionActive" Value="False"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="BorderBrush" Value="Orange"/>
+                    </MultiTrigger>
+                </Style.Triggers>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+        </Grid.Resources>
         <TreeView x:Name="treeView"  Margin="0" >
             <TreeView.Resources>
-                <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FFEDCEED" Offset="0"/>
-                    <GradientStop Color="#FFEDA8EC" Offset="1"/>
-                </LinearGradientBrush>
-                <LinearGradientBrush x:Key="{x:Static SystemColors.ControlBrushKey}" EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FFEEEDED" Offset="0"/>
-                    <GradientStop Color="#FFDDDDDD" Offset="1"/>
-                </LinearGradientBrush>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+                
+                <BitmapImage x:Key="addImg" UriSource="image/addGrouping.png" />
+                <BitmapImage x:Key="delImg" UriSource="image/delGrouping.png" />
             </TreeView.Resources>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="BorderThickness" Value="1.5"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="#ED5CEB"/>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True"/>
-                                <Condition Property="IsSelectionActive" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="BorderBrush" Value="LightGray"/>
-                        </MultiTrigger>
-                    </Style.Triggers>
-                    <Style.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="2"/>
-                        </Style>
-                    </Style.Resources>
-                </Style>
-            </TreeView.ItemContainerStyle>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add grouping" Click="addGrouping">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource addImg}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Delete grouping" Click="deleteGrouping">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource delImg}" />
+                            </MenuItem.Icon>
+                    </MenuItem>
+                                  
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            
         </TreeView>
         <Image x:Name="imGrouping" HorizontalAlignment="Left" Height="16" Margin="-51,0,0,0" VerticalAlignment="Top" Width="16" Source="image/grouping.png" Visibility="Hidden"/>
         <Image x:Name="imAlpha" HorizontalAlignment="Left" Height="16" Margin="-51,35,0,0" VerticalAlignment="Top" Width="16" Source="image/alpha.var.png" Visibility="Hidden"/>
