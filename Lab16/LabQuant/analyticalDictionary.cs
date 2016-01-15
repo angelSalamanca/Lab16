@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LabQuant
 {
@@ -56,6 +57,12 @@ namespace LabQuant
             }
             set { }
         }
+
+        public Boolean isValidName(string aName)
+        {
+            return Regex.IsMatch(aName, "^[A-Za-z0-9-_ ]+$");
+        }
+        // 
 
         public analyticalDictionary(string dName)
         {

@@ -27,6 +27,7 @@ namespace Lab16
     {
 
         analyticalDictionary myDD;
+        bivariate myBiv;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace Lab16
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            button.IsEnabled = false;
             // Create dictionary
             myDD = new analyticalDictionary("Sample");
             
@@ -91,10 +93,35 @@ namespace Lab16
                 }
             }
 
-            bivariate myBiv = new bivariate(xGrouping, xValues, yGrouping, yValues);
-
-            byte a = 0;
+           this.myBiv  = new bivariate(xGrouping, xValues, yGrouping, yValues);
+                       
             // echo dictionary
+           
+            // add new grouping
+            myDD.varByName["x"].addGrouping("Other grouping", false);
+            myDD.varByName["x"].addGrouping("Other grouping 2", false);
+            myDD.varByName["y"].addGrouping("Useless grouping", false);
+            myDD.varByName["Type of Employment"].addGrouping("Special grouping", false);
+
+
+            fillVAndG();
+        } // click
+
+        private void fillVAndG()
+        {
+            varGrouping  vAndG = new varGrouping(myDD);
+            vAndG.HorizontalAlignment = HorizontalAlignment.Stretch;
+            vAndG.VerticalAlignment = VerticalAlignment.Stretch;
+            this.sPanel.Children.Add(vAndG);
+
+            foreach(KeyValuePair<int, variable> kvp in this.myDD.varByNum)
+            {
+                vAndG.addVariable(kvp.Value);
+            }
+        } // fillVAndG
+
+        private void echoDictionary()
+        {
             string[] ddText = myDD.toText().Split(myDD.separator, StringSplitOptions.None);
 
             foreach (string line in ddText)
@@ -111,30 +138,14 @@ namespace Lab16
                 int g2 = kvp.Key.i2;
                 int howMany = kvp.Value;
                 string l = g1 + " - " + g2 + " : " + howMany;
-                    this.listView.Items.Add(l);
+                this.listView.Items.Add(l);
             }
 
-            // add new grouping
-            myDD.varByName["x"].addGrouping("Other grouping", false);
-            myDD.varByName["x"].addGrouping("Other grouping 2", false);
-            myDD.varByName["y"].addGrouping("Useless grouping", false);
-            myDD.varByName["Type of Employment"].addGrouping("Special grouping", false);
+        }
 
-
-            fillVAndG();
-        } // click
-
-        private void fillVAndG()
+        private void button1_Click(object sender, RoutedEventArgs e)
         {
-            varGrouping  vAndG = new varGrouping();
-            vAndG.HorizontalAlignment = HorizontalAlignment.Stretch;
-            vAndG.VerticalAlignment = VerticalAlignment.Stretch;
-            this.sPanel.Children.Add(vAndG);
-
-            foreach(KeyValuePair<int, variable> kvp in this.myDD.varByNum)
-            {
-                vAndG.addVariable(kvp.Value);
-            }
-        } // fillVAndG
+            this.echoDictionary();
+        }
     } // class
 } // namespace

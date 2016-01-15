@@ -90,9 +90,34 @@ namespace LabQuant
         public grouping addGrouping(string groupingName, Boolean isNoGroup)
         {
             grouping newGrouping = new grouping(this, groupingName, myAnalyticalDictionary.getGroupingNum, isNoGroup);
+            if (existsGrouping(groupingName))
+            {
+                return null;
+            }
             myGroupings.Add(newGrouping.groupingId, newGrouping);
             return newGrouping;
 
+        }
+
+        public void renameGrouping(string oldName, string newName)
+        {
+            foreach (KeyValuePair<int, grouping> kvp in myGroupings)
+            {
+                if (kvp.Value.name == oldName)
+                {
+                    kvp.Value.name = newName;
+                }
+            }
+        }
+
+        public Boolean existsGrouping(string gName)
+        {
+            foreach (KeyValuePair<int, grouping> kvp in myGroupings)
+            {
+                if(kvp.Value.name == gName)
+                { return true; }
+            }
+            return false;
         }
 
     } // class variable
