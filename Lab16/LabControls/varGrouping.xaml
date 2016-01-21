@@ -17,6 +17,35 @@
         </LinearGradientBrush>
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
         <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+        <Style TargetType="{x:Type UserControl}">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="9"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}" x:Key="tbGrouping">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <!-- Modify default template, to change triggers -->
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                            </Trigger>
+                            
+                            <!-- MY trigger -->
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#FFFF1493"/>
+                                <Setter Property="BorderThickness" Value="0.75"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </UserControl.Resources>
     <Grid x:Name="container">
         <Grid.Resources>
@@ -31,7 +60,7 @@
                             <Condition Property="IsSelected" Value="True"/>
                             <Condition Property="IsSelectionActive" Value="False"/>
                         </MultiTrigger.Conditions>
-                        <Setter Property="BorderBrush" Value="Orange"/>
+                        <Setter Property="BorderBrush" Value="DeepPink"/>
                     </MultiTrigger>
                 </Style.Triggers>
                 <Style.Resources>
@@ -41,11 +70,11 @@
                 </Style.Resources>
             </Style>
         </Grid.Resources>
-        <TreeView x:Name="treeView"  Margin="0" >
+        <TreeView x:Name="treeView"  Margin="0" FocusManager.IsFocusScope="True">
             <TreeView.Resources>
-                
                 <BitmapImage x:Key="addImg" UriSource="image/addGrouping.png" />
                 <BitmapImage x:Key="delImg" UriSource="image/delGrouping.png" />
+                <BitmapImage x:Key="renImg" UriSource="image/rename.png" />
             </TreeView.Resources>
             <TreeView.ContextMenu>
                 <ContextMenu>
@@ -59,7 +88,12 @@
                             <Image Source="{StaticResource delImg}" />
                             </MenuItem.Icon>
                     </MenuItem>
-                                  
+                    <MenuItem Header="Rename grouping" Click="renameGrouping">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource renImg}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
                 </ContextMenu>
             </TreeView.ContextMenu>
             

@@ -20,7 +20,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel x:Name="sPanel" Grid.Column="1" Margin="0,45,36,50" Background="#FFF3F5CA"/>
+        <StackPanel x:Name="sPanel" Grid.Column="1" Margin="0,45,36,50" Background="#FFF3F5CA" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanVerticallyScroll="True" CanHorizontallyScroll="True"/>
+        <Button x:Name="button1" Content="View DD" HorizontalAlignment="Left" Height="20" Margin="136,10,0,0" VerticalAlignment="Top" Width="77" Click="button1_Click"/>
 
     </Grid>
 </Window>

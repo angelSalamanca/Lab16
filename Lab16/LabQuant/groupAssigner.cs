@@ -31,6 +31,28 @@ namespace LabQuant
             return myGrouping.noGroup;
         }
 
+        public List<int> assignTextGroup(List<int> catNums)
+        {
+            List<int> groupNums = new List<int>();
+            int noGroupNum = myGrouping.noGroup.groupId;
+            foreach (int catNum in catNums)
+            {
+                Boolean found = false;
+                foreach (KeyValuePair<Int32, group> kvp in myGrouping.myGroups)
+                {
+                    group g = kvp.Value;
+                    if (g.myCategories.Keys.Contains(catNum))
+                    {
+                        groupNums.Add(g.groupId);
+                    }
+                }
+                if (!found)
+                { groupNums.Add(noGroupNum); }
+
+            }
+            return (groupNums);
+        } // assignTextGroup
+
         private category assignCat(string sValue)
         {
             variable var = myGrouping.myVariable;
