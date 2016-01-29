@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
 namespace testDG
 {
@@ -21,7 +23,9 @@ namespace testDG
     public partial class MainWindow : Window
     {
 
-        List<catGroupAggs> names;
+        public List<catGroupAggs> names;
+        groupingAggs myGrouping;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,75 +36,46 @@ namespace testDG
         {
            
             
-            groupingAggs myGrouping = new groupingAggs();
+             myGrouping = new groupingAggs();
             /// Group 1
-            catGroupAggs myGroup =   myGrouping.addGroup("Group 1");
-            myGrouping.addCategory(myGroup, "Low Cat", 1000, 72, 1302, 1456);
-            myGrouping.addCategory(myGroup, "Mid Cat", 2000, 272, 2302, 2456);
-            myGrouping.addCategory(myGroup, "High Cat", 3000, 372, 3302, 3456);
+            catGroupAggs myGroup =   myGrouping.addGroup("Group 1", 100);
+            myGrouping.addCategory(myGroup, "Low Cat", 1000, 72, 1302, 1456,1);
+            myGrouping.addCategory(myGroup, "Mid Cat", 2000, 272, 2302, 2456,2);
+            myGrouping.addCategory(myGroup, "High Cat", 3000, 2372, 3302, 3456,3);
 
-            myGroup = myGrouping.addGroup("Group 2");
-            myGrouping.addCategory(myGroup, "Cold", 1000, 72, 1302, 1456);
-            myGrouping.addCategory(myGroup, "Cool", 2000, 272, 2302, 2456);
-            myGrouping.addCategory(myGroup, "Hot", 3000, 372, 3302, 3456);
+            myGroup = myGrouping.addGroup("Group 2", 200);
+            myGrouping.addCategory(myGroup, "Cold", 1100, 72, 1302, 1456,4);
+            myGrouping.addCategory(myGroup, "Cool", 2200, 272, 2302, 2456,5);
+            myGrouping.addCategory(myGroup, "Hot", 3300, 372, 3302, 3456,6);
 
-            myGroup = myGrouping.addGroup("Group 3");
-            myGrouping.addCategory(myGroup, "North", 1000, 72, 1302, 1456);
-            myGrouping.addCategory(myGroup, "South", 2000, 272, 2302, 2456);
+            myGroup = myGrouping.addGroup("Group 3",300);
+            myGrouping.addCategory(myGroup, "North", 1900, 72, 1302, 1456,7);
+            myGrouping.addCategory(myGroup, "South", 888, 272, 2302, 2456,8);
 
-            myGroup = myGrouping.addGroup("Last Group");
+            myGroup = myGrouping.addGroup("Last Group", 400);
+
+            myGrouping.propagateOdds();
 
             names = myGrouping.flatList();
 
-
-
-
-
-
-
             this.DG1.ItemsSource = names;
+
+            
         }
 
-        private int getRowIndex(DataGridRow dgRow)
+        public void clickButton(object sender, RoutedEventArgs e)
         {
-            return DG1.ItemContainerGenerator.IndexFromContainer(dgRow);
+            bivarForm bvf = new bivarForm(myGrouping);
+            this.button.IsEnabled = false;
+            bvf.ShowDialog();
         }
 
-        private DataGridRow getRowAt(int rowIndex)
-        {
-            return (DataGridRow)DG1.ItemContainerGenerator.ContainerFromIndex(rowIndex);
-        }
+       
+    } // Window
 
-        public void expand(object sender, RoutedEventArgs e )
-        {
-            DependencyObject obj = (DependencyObject)e.OriginalSource;
-            while (!(obj is DataGridRow) && obj != null) obj = VisualTreeHelper.GetParent(obj);
-
-            /// disregard for categories
-            catGroupAggs catGroupRow = (catGroupAggs)(((DataGridRow)obj).Item);
-
-            if (!catGroupRow.isCategory)
-            {
-                DataGridRow myRow = (DataGridRow)obj;
-                double rowHeight = myRow.ActualHeight;
-                /// go over children and toggle visibility
-                int rowIndex = getRowIndex(myRow) + 1;
-
-                myRow = getRowAt(rowIndex);
-
-                while (null!=myRow && ((catGroupAggs)myRow.Item).isCategory)
-                {
-                    myRow.Height= rowHeight - myRow.ActualHeight ;
-                    rowIndex += 1;
-                    myRow = getRowAt(rowIndex);
-
-                }
-
-
-
-            }
-        }
-    }
 
     
+
+    
+
 }

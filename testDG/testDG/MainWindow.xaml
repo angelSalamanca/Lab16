@@ -1,28 +1,108 @@
 ﻿<Window x:Class="testDG.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SimpleDataGridSample" Height="400" Width="840">
-    <Grid Margin="10">
+        xmlns:vm="clr-namespace:testDG.catAndGroupVM"
+        xmlns:local="clr-namespace:testDG"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Title="SimpleDataGridSample" Height="600" Width="1150">
+
+        <Grid Margin="10">
+        <Grid.Resources>
+            <vm:ConvertItemToArrow x:Key="IndexConverter"/>
+            
+            <Style x:Key="numRecords" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style x:Key="rates" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="ContentStringFormat" Value="###,###,##0.##"/>
+            </Style>
+
+
+        </Grid.Resources>
+            
+            
         <DataGrid Name="DG1" 
                   IsReadOnly="True"
-                  AutoGenerateColumns="False" CanUserSortColumns="False">
-            <DataGrid.RowHeaderTemplate>
-            <DataTemplate>
-                <ToggleButton x:Name="RowHeaderToggleButton"
-					              Click="expand"
-					              Cursor="Hand" />
-            </DataTemplate>
-            </DataGrid.RowHeaderTemplate>
+                  AutoGenerateColumns="False" CanUserSortColumns="False" FontFamily="Segoe UI"
+                  ColumnHeaderHeight="30"  HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LightGray"
+                  Background="#FF666F81" CanUserResizeRows="False" Margin="0,136,0,0" SelectionMode="Single" SelectionUnit="Cell"
+                  RowHeaderStyle="{DynamicResource CustomDataGridRowHeader}">
+
+            <DataGrid.DataContext>
+                <vm:catAndGroupVM />
+            </DataGrid.DataContext>
+
+            <DataGrid.Resources>
+                <Style x:Key="CustomDataGridRowHeader" TargetType="DataGridRowHeader" >
+                    <Setter Property="Width" Value="0"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCategory}" Value="true">
+                            <Setter Property="Background" Value="White"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding isCategory}" Value="false">
+                            <Setter Property="Background" Value="#FFD0EDF7"></Setter>
+                            <Setter Property="Foreground" Value="#FF191391"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                </Style>
+            </DataGrid.RowStyle>
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}" >
+                    <Setter Property="FontWeight"  Value="Bold" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="#FF222288" />
+                    <Setter Property="Foreground" Value="LightBlue"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
             <DataGrid.Columns>
-                <DataGridTextColumn Width="200" Header="Name" Binding = "{Binding name}" />
-                <DataGridTextColumn Width="100" Header="# Goods" Binding = "{Binding numGoods}" />
-                <DataGridTextColumn Width="100" Header="# Bads" Binding = "{Binding numBads}"/>
-                <DataGridTextColumn Width="100" Header="# Accepts" Binding = "{Binding numAccepts}"/>
-                <DataGridTextColumn Width="100" Header="# Total" Binding = "{Binding numTotal}"/>
-                <DataGridTextColumn Width="100" Header="Odds" Binding = "{Binding Odds}"/>
-                <DataGridTextColumn Width="*" Header="Bad rate" Binding = "{Binding badRate}"/>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Path=DataContext.arrowClick, RelativeSource= {RelativeSource FindAncestor,  AncestorType={x:Type DataGrid}}}"
+                                    Background="Transparent" BorderBrush="Transparent">
+                                <Path >
+                                    <Path.Style>
+                                        <Style>
+                                            <Setter Property="Path.Fill" Value="SteelBlue" />
+                                            <Setter Property="Path.Data" Value="{Binding Converter={StaticResource IndexConverter}}" />
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Button>
+                        </DataTemplate>
+                        
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="{Binding catGroupAggs.Backcolor}" />
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
+
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Width="200" Header="Name" Binding = "{Binding name}"/>
+                <DataGridTextColumn Width="100" Header="# Goods" Binding = "{Binding numGoods}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="# Bads" Binding = "{Binding numBads}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="# Accepts" Binding = "{Binding numAccepts}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="# Total" Binding = "{Binding numTotal}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="Bad rate" Binding = "{Binding badRate, StringFormat='{}{0:P}'}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="Odds" Binding = "{Binding Odds , StringFormat='{}{0:N2}'}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="100" Header="Odds index" Binding = "{Binding goodBadIndex,  StringFormat='{}{0:N2}'}" CellStyle="{StaticResource numRecords}"/>
+                <DataGridTextColumn Width="*" Header="Weight Of Evidence" Binding = "{Binding weightOfEvidence , StringFormat='{}{0:N2}'}" CellStyle="{StaticResource numRecords}"/>
             </DataGrid.Columns>
+            
         </DataGrid>
+        <Button x:Name="button" Content="Button" Click="clickButton" HorizontalAlignment="Left" Margin="456,26,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
+   
 </Window>
 
