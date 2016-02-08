@@ -37,24 +37,29 @@ namespace Lab16
         {
             button.IsEnabled = false;
             // Create dictionary
-            myDD = new analyticalDictionary("Sample");
+            myDD = new analyticalDictionary("Sample", "D:\\work\\Lab projects\\");
             
             // Create variable
-            variable x = myDD.addVar("x", variable.typeOfVariable.Integer);
-            variable y = myDD.addVar("y", variable.typeOfVariable.String);
-            variable z = myDD.addVar("Time at Job", variable.typeOfVariable.Integer);
-            z = myDD.addVar("Residential Status", variable.typeOfVariable.String);
-            z = myDD.addVar("Type of Employment", variable.typeOfVariable.String);
-            z = myDD.addVar("Annual revenues", variable.typeOfVariable.Double);
-            z = myDD.addVar("Loan amount", variable.typeOfVariable.Double);
-            z = myDD.addVar("Loan duration", variable.typeOfVariable.Integer);
-            z = myDD.addVar("Gender", variable.typeOfVariable.String);
+            variable x = myDD.addVar("x", General.typeOfVariable.Integer);
+            variable y = myDD.addVar("y", General.typeOfVariable.String);
+            variable z = myDD.addVar("Time at Job", General.typeOfVariable.Integer);
+            z = myDD.addVar("Residential Status", General.typeOfVariable.String);
+            z = myDD.addVar("Type of Employment", General.typeOfVariable.String);
+            z = myDD.addVar("Annual revenues", General.typeOfVariable.Double);
+            var la = myDD.addVar("Loan amount", General.typeOfVariable.Double);
+            z = myDD.addVar("Loan duration", General.typeOfVariable.Integer);
+            z = myDD.addVar("Gender", General.typeOfVariable.String);
 
+            myDD.addGrouping(la, "Extravagant");
+
+            var someCat = myDD.addCat(la, "low", string.Empty);
+            someCat.lowerDouble = -15E15/0.13;
+            someCat.upperDouble = 90.0 / 7.0;
 
             category goodCat = myDD.addCat(y, "Good", "G");
             category badCat = myDD.addCat(y, "Bad", "B");
             category indetCat = myDD.addCat(y, "Indeterminate", "I");
-            category rejectCat = myDD.addCat(y, "Good",  "R");
+            category rejectCat = myDD.addCat(y, "Rejected",  "R");
 
             grouping xGrouping = x.getGroupingByName("main");
             myDD.addIntGroup(xGrouping, "0-10", 0, 10, true, false);
@@ -67,7 +72,12 @@ namespace Lab16
             myDD.groupCat(badCat, myDD.addTextGroup(yGrouping, "Bad"));
             myDD.groupCat(indetCat, myDD.addTextGroup(yGrouping, "Indet"));
             myDD.groupCat(rejectCat, myDD.addTextGroup(yGrouping, "Reject"));
-            
+
+
+            string serial = this.myDD.toXML();
+            System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\Kill\\ad.xml");
+            sw.WriteLine(serial);
+            sw.Close();
 
             groupAssigner yAssigner = new groupAssigner(yGrouping);
             group assignedGroupY = yAssigner.assignTextGroup("0");
@@ -93,10 +103,15 @@ namespace Lab16
                 }
             }
 
-           this.myBiv  = new bivariate(xGrouping, xValues, yGrouping, yValues);
+            // Write to file
+            var vCol = new LabData.varColumn(myDD.varByName["y"], "D:\\Kill\\");
+            vCol.stringValues = yValues;
+            vCol.write();
+            vCol.read();
+
+
+            this.myBiv  = new bivariate(xGrouping, xValues, yGrouping, yValues);
                        
-            // echo dictionary
-           
             // add new grouping
             myDD.varByName["x"].addGrouping("Other grouping", false);
             myDD.varByName["x"].addGrouping("Other grouping 2", false);
@@ -106,6 +121,19 @@ namespace Lab16
 
             fillVAndG();
         } // click
+
+        private void tabdeli_Click(object sender, RoutedEventArgs e)
+        {
+            var projectFolder = "D:\\work\\Lab projects\\";
+            var myLoader = new LabData.tabDeliLoader("New project", projectFolder, "D:\\minilab.csv", "Cards base", ';', new System.Globalization.CultureInfo("es"));
+            analyticalDictionary labDict = myLoader.Load();
+            myLoader.loadData();
+            
+            var writeSuccess = labDict.save();
+
+
+            this.listView.Items.Add("Imported");
+        }
 
         private void fillVAndG()
         {
@@ -122,7 +150,7 @@ namespace Lab16
 
         private void echoDictionary()
         {
-            string[] ddText = myDD.toText().Split(myDD.separator, StringSplitOptions.None);
+            string[] ddText = myDD.toText().Split(General.separator, StringSplitOptions.None);
 
             foreach (string line in ddText)
             {

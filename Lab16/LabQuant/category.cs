@@ -32,10 +32,10 @@ namespace LabQuant
             this.myVar = cVar;
 
             if (cIsMissing)
-                {isMissing = true; this.name = myVar.myAnalyticalDictionary.missingCatName;}
+                {isMissing = true; this.name = General.missingCatName;}
 
             if (cIsWrong)
-                {isWrong = true; this.name = myVar.myAnalyticalDictionary.wrongCatName; }
+                {isWrong = true; this.name = General.wrongCatName; }
         }
 
     }

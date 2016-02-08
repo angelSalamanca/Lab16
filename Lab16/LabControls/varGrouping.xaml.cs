@@ -59,9 +59,9 @@ namespace LabControls
 
             // image
             Image img = new Image();
-            if (var.variableType == variable.typeOfVariable.String) img.Source = this.imAlpha.Source;
-            if (var.variableType == variable.typeOfVariable.Integer) img.Source = this.imInteger.Source;
-            if (var.variableType == variable.typeOfVariable.Double) img.Source = this.imDouble.Source;
+            if (var.variableType == General.typeOfVariable.String) img.Source = this.imAlpha.Source;
+            if (var.variableType == General.typeOfVariable.Integer) img.Source = this.imInteger.Source;
+            if (var.variableType == General.typeOfVariable.Double) img.Source = this.imDouble.Source;
 
             sp.Children.Add(img);
 

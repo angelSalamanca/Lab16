@@ -58,6 +58,7 @@
     <Compile Include="bivariate.cs" />
     <Compile Include="catAssigner.cs" />
     <Compile Include="category.cs" />
+    <Compile Include="General.cs" />
     <Compile Include="group.cs" />
     <Compile Include="groupAssigner.cs" />
     <Compile Include="grouping.cs" />

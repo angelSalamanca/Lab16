@@ -100,6 +100,10 @@
       <Project>{9633646f-306f-48a9-9fdb-b28ef849ff71}</Project>
       <Name>LabControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LabData\LabData.csproj">
+      <Project>{f8626f1d-90d4-46d0-8b52-f573d8094035}</Project>
+      <Name>LabData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LabQuant\LabQuant.csproj">
       <Project>{23598ea1-4328-4b37-aed8-b8d373aad436}</Project>
       <Name>LabQuant</Name>

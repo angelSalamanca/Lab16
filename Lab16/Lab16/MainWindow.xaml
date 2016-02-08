@@ -12,7 +12,7 @@
             <ColumnDefinition Width="483*"/>
             <ColumnDefinition Width="386*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="button" Content="Go" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <Button x:Name="button" Content="tab deli" HorizontalAlignment="Left" Margin="279,10,0,0" VerticalAlignment="Top" Width="75" Click="tabdeli_Click" RenderTransformOrigin="3.575,0.491"/>
         <ListView x:Name="listView" HorizontalAlignment="Left" Margin="24,45,0,50" Panel.ZIndex="-1" Width="330">
             <ListView.View>
                 <GridView>
@@ -22,6 +22,7 @@
         </ListView>
         <StackPanel x:Name="sPanel" Grid.Column="1" Margin="0,45,36,50" Background="#FFF3F5CA" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanVerticallyScroll="True" CanHorizontallyScroll="True"/>
         <Button x:Name="button1" Content="View DD" HorizontalAlignment="Left" Height="20" Margin="136,10,0,0" VerticalAlignment="Top" Width="77" Click="button1_Click"/>
+        <Button x:Name="button_Copy" Content="Go" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click" RenderTransformOrigin="0.072,1.035"/>
 
     </Grid>
 </Window>

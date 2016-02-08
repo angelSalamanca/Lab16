@@ -7,28 +7,23 @@ using System.Threading.Tasks;
 
 namespace LabQuant
 {
-
-   
+    
    public class variable
     {
         public string name;
         public Int32 varId;
-        public typeOfVariable variableType;
+        public General.typeOfVariable variableType;
         public string Description;
+        public General.blockType myBlock;
 
-        private string missingReplacement;
-        private string wrongReplacement;
+        public string missingReplacement;
+        public string wrongReplacement;
         
         public Dictionary <Int32,category> myCategories;
         public Dictionary<Int32, grouping> myGroupings;
 
         public analyticalDictionary myAnalyticalDictionary;
-
-      
-
-
-        public enum typeOfVariable : byte { String = 1, Integer, Double, Date };
-
+        
         public grouping getGroupingByName(string gName)
         {
             foreach (KeyValuePair<Int32, grouping > kvp in myGroupings)
@@ -51,12 +46,15 @@ namespace LabQuant
         }
 
 
-        public variable(string vName, typeOfVariable vType, Int32 vNum, analyticalDictionary vAD)
+        public variable(string vName, General.typeOfVariable vType, Int32 vNum, analyticalDictionary vAD, General.blockType aBlock = General.blockType.Input )
         {
             name = vName;
             variableType = vType;
             varId = vNum;
             myAnalyticalDictionary = vAD;
+            myBlock = aBlock;
+            missingReplacement = "";
+            wrongReplacement = "";
 
             // add no cat
             category missCat = new category("", myAnalyticalDictionary.getCatNum, this, true, false);
@@ -67,13 +65,10 @@ namespace LabQuant
             this.myCategories.Add(wrongCat.catId, wrongCat);
             myGroupings = new Dictionary<Int32, grouping>();
 
-            addGrouping(myAnalyticalDictionary.mainGroupingName, true);
-
-           
+            addGrouping(General.mainGroupingName, true);
             
         }
     
-
     public category addCategory(string cName, Int32 CId, string cValue)
     {
             category myCat = new category(cName, CId, this, false, false);

@@ -28,6 +28,10 @@ namespace LabQuant
             isNoGroup = gNoGroup;
             myGrouping = gGrouping;
             myCategories = new Dictionary<int, category>();
+            if (isNoGroup)
+            {
+                name = General.noGroupName;
+            }
         }
 
         public void groupCat(category cat)
